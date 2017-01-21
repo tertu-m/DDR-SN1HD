@@ -1,0 +1,98 @@
+local playMode = GAMESTATE:GetPlayMode()
+if playMode ~= 'PlayMode_Regular' and playMode ~= 'PlayMode_Rave' and playMode ~= 'PlayMode_Battle' then
+	curStage = playMode;
+end;
+local sStage = GAMESTATE:GetCurrentStage();
+local tRemap = {
+	Stage_1st		= 1,
+	Stage_2nd		= 2,
+	Stage_3rd		= 3,
+	Stage_4th		= 4,
+	Stage_5th		= 5,
+	Stage_6th		= 6,
+};
+
+if tRemap[sStage] == PREFSMAN:GetPreference("SongsPerPlay") then
+	sStage = "Stage_Final";
+else
+	sStage = sStage;
+end;
+
+local t = Def.ActorFrame {};
+t[#t+1] = Def.ActorFrame {
+	InitCommand=function(self)
+		self:sleep(3.01);
+	end;
+
+	---- DOOR OPEN > CLOSE  CLOSE > OPEN
+	LoadActor(THEME:GetPathB("","doors close"));
+	LoadActor(("DONK"))..{
+		OnCommand=cmd(queuecommand,("Play"));
+		PlayCommand=cmd(play;);
+	};
+	--- Flash SONG BANNER  sound------
+	LoadActor("SoundStage") .. {
+	};
+};
+
+t[#t+1] = Def.ActorFrame{
+	InitCommand=cmd(y,SCREEN_CENTER_Y+20);
+	LoadActor("black_1")..{
+		InitCommand=cmd(diffusealpha,0.3;x,SCREEN_LEFT+174);
+		OnCommand=cmd(addx,-348;zoomy,0;sleep,0.099;sleep,0.396;linear,0.099;zoomy,1;addx,348);
+	};
+	LoadActor("black_2")..{
+		InitCommand=cmd(diffusealpha,0.3;x,SCREEN_RIGHT-136);
+		OnCommand=cmd(addx,272;zoomy,0;sleep,0.099;sleep,0.396;linear,0.099;zoomy,1;addx,-272);
+	};
+};
+
+t[#t+1] = Def.ActorFrame {
+	InitCommand=function(self)
+		self:y(SCREEN_CENTER_Y-124);
+	end;
+	LoadActor("banner_stage")..{
+		InitCommand=cmd(CenterX);
+		OnCommand=cmd(zoomy,0;sleep,0.099;sleep,0.396;linear,0.099;zoomy,1);
+	};
+};
+
+if not GAMESTATE:IsCourseMode() then
+--song jacket--
+t[#t+1] = Def.ActorFrame {
+	OnCommand=cmd(playcommand,'Set';CenterX;y,SCREEN_CENTER_Y-130;zoomy,0;sleep,0.099;sleep,0.396;linear,0.099;zoomy,1);
+	Def.Sprite {
+		SetCommand=function(self)
+		local song = GAMESTATE:GetCurrentSong();
+			if song:HasBanner() then
+				self:LoadFromSongBanner(GAMESTATE:GetCurrentSong());
+				self:setsize(256,80);
+			else
+				self:Load(THEME:GetPathG("","Common fallback banner"));
+				self:setsize(256,80);
+			end;
+		end;
+	};
+};
+else
+t[#t+1] = LoadActor("CourseDisplay");
+end;
+
+t[#t+1] = LoadActor("StageDisplay");
+
+t[#t+1] = LoadActor("bottom_stage")..{
+	InitCommand=cmd(CenterX;y,SCREEN_BOTTOM-27);
+	OnCommand=cmd(addy,54;sleep,0.396;linear,0.198;addy,-54);
+};
+
+t[#t+1] = Def.ActorFrame{
+	InitCommand=cmd(CenterX;y,SCREEN_TOP+52);
+	OnCommand=cmd(addy,-104;sleep,0.396;linear,0.198;addy,104);
+	LoadActor(THEME:GetPathG("","ScreenWithMenuElements header/centerbase"));
+	LoadActor(THEME:GetPathG("","ScreenWithMenuElements header/Stage"))..{
+		InitCommand=cmd(valign,1;);
+	}
+};
+
+
+return t
