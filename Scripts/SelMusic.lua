@@ -99,9 +99,9 @@ end
 
 function BPMNumPosX()
   if ThemePrefs.Get("XStyledMusicSelect") == "Wide Style" then
-    PosX = SCREEN_LEFT+86
+    PosX = SCREEN_LEFT+84
   else
-    PosX = SCREEN_CENTER_X-234
+    PosX = SCREEN_CENTER_X-236
   end
   return PosX
 end
@@ -173,9 +173,17 @@ function WheelScrollOn(self)
   local DO = 99
   if ThemePrefs.Get("XStyledMusicSelect") == "Wide Style" then
     self:draworder(DO)
-    self:x(156)
+    if PREFSMAN:GetPreference("DisplayAspectRatio") == "16_9" then
+      self:x(263)
+    else
+      self:x(156)
+    end;
   else
     self:draworder(DO)
-    self:x(263)
+    if PREFSMAN:GetPreference("DisplayAspectRatio") == "16_9" then
+      self:x(263)
+    else
+      self:x(156)
+    end;
   end
 end

@@ -64,7 +64,7 @@ local function UpdateAni(self)
 	if timer and ani then
 		local time = timer:GetSeconds()
 		local ftime = time - math.floor(time)
-		ani:rotationz(360*ftime)
+		ani:rotationz((-360*(ftime/2)))
 	elseif timer then
 		timer:visible(false)
 		self:SetUpdateFunction(nil)

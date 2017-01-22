@@ -31,6 +31,7 @@ function AssembleStarter()
 				string.format(combineFormat, groupName, shortSongDir))
 		end
 	end
+	print("starter: "..#set)
 	--sort all the groups and collect their names, then sort that too
 	local groupNames = {}
 	for groupName, group in pairs(set) do
@@ -65,4 +66,15 @@ function EnableStarterGameplayJunk()
 	local env = GAMESTATE:Env()
 	env.StarterMode = true
 	SONGMAN:SetPreferredSongs("Starter")
+end
+
+--if we've never made the file before, it complains
+--this is enough to make it not complain
+if not FILEMAN:DoesFileExist(outputPath) then
+	local fHandle = RageFileUtil.CreateRageFile()
+	fHandle:Open(outputPath, 10)
+	fHandle:Write("\n")
+	fHandle:Close()
+	fHandle:destroy()
+	assert(FILEMAN:DoesFileExist(outputPath), "creating placeholder Starter preferred sort file failed")
 end

@@ -5,13 +5,13 @@ local t = Def.ActorFrame{
 	LoseFocusCommand=cmd(visible,false);
 	OffCommand=cmd(linear,0.133;addx,-390);
 	-- Information panel
-	LoadActor(THEME:GetPathG("","_PlayMode/_infoback.png"))..{
+	LoadActor(THEME:GetPathG("","_PlayMode/_infoback"))..{
 		InitCommand=cmd(zoomx,-1);
 	};
 	LoadActor(THEME:GetPathG("","_PlayMode/MAX (doubleres).png"))..{
 		InitCommand=cmd(halign,0;x,-170;y,40);
 	};
-	LoadActor(THEME:GetPathG("","_PlayMode/dots.png"))..{
+	LoadActor(THEME:GetPathG("","_PlayMode/dots"))..{
 		InitCommand=cmd(x,54;y,42);
 	};
 	LoadFont("_@apex commercial 20px")..{

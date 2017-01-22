@@ -10,11 +10,11 @@ local t = Def.ActorFrame {
 		end;
 		SortOrderChangedMessageCommand=function(self)
 			self:accelerate(0.18)
-			self:addy(-28)
+			self:addy(-36)
 			self:queuecommand("SetGraphic");
 			self:sleep(0.2)
 			self:decelerate(0.18)
-			self:addy(28)
+			self:addy(36)
 		end;
 	};
 };
