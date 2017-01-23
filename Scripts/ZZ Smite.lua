@@ -37,7 +37,7 @@ local maxScore = 10000000
 local function MakeScoringFunctions(object, pn, course)
     SCREENMAN:SystemMessage("Smite enabled.")
     local radar = object:GetRadarValues(pn)
-    local objectCount = radar:GetValue('RadarCategory_TapsAndHolds')+radar:GetValue('RadarCategory_Holds')+radar:GetValue('RadarCategory_Rolls')
+    local objectCount = radar:GetValue('RadarCategory_TapsAndHolds')+(radar:GetValue('RadarCategory_Holds')+radar:GetValue('RadarCategory_Rolls'))/2
     local package = {}
     local formuler = course and NormalFormuler or CourseFormuler
     local curFraction = 0
@@ -55,9 +55,9 @@ local function MakeScoringFunctions(object, pn, course)
     end
     package.AddHoldScore = function(params) 
         if params.HoldNoteScore == 'HoldNoteScore_Held' then
-            curFraction = curFraction + 1
+            curFraction = curFraction + 0.5
         end
-        curMaxFraction = curMaxFraction + 1
+        curMaxFraction = curMaxFraction + 0.5
     end
 
     package.GetCurrentScore = function(pss, stage, exact)
