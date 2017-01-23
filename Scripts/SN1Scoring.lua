@@ -1,5 +1,5 @@
---This is an implementation of DDR SuperNOVA and beyond scoring as described
---by Aaron Chmielowiec at http://aaronin.jp/ddrssystem.html#ss9.
+--This is an implementation of DDR SuperNOVA scoring as described
+--by Aaron Chmielowiec at http://aaronin.jp/ddrssystem.html#ss8
 
 --To use it, you can call PrepareScoringInfo at the start of each stage or course.
 
@@ -12,7 +12,6 @@ ScoringInfo = {
 }
 
 --The multiplier tables have to be filled in completely.
---However, the deduction ones do not.
 local normalScoringMults = 
 {
     TapNoteScore_W1 = 1,
@@ -45,31 +44,33 @@ local maxQuasiMultipliers =
 
 local maxScore = 10000000
 
-local function ComputeScore(pss, max, course)
-    local maxFraction = 0
-    local tnsMultipliers, hnsMultipliers
-    
-    if max then
-        tnsMultipliers = maxQuasiMultipliers
-        hnsMultipliers = {HoldNoteScore_Held = 1, HoldNoteScore_LetGo = 1}
-    else
-        tnsMultipliers = course and courseScoringMults or normalScoringMults
-        hnsMultipliers = {HoldNoteScore_Held = 1}
-    end
-    local scoreCount
-    for tns, multiplier in pairs(tnsMultipliers) do
-        scoreCount = pss:GetTapNoteScores(tns)
-        maxFraction = maxFraction + (scoreCount * multiplier)
-    end
-    for hns, multiplier in pairs(hnsMultipliers) do
-        scoreCount = pss:GetHoldNoteScores(hns)
-        maxFraction = maxFraction + (scoreCount * multiplier)
-    end
-    return (maxFraction/objectCount) * maxScore
-end
-
 local function MakeScoringFunctions(object, pn, course)
+    local radar = object:GetRadarValues(pn)
+    local objectCount = radar:GetValue('RadarCategory_TapsAndHolds')+radar:GetValue('RadarCategory_Holds')+radar:GetValue('RadarCategory_Rolls')
     local package = {}
+
+    local function ComputeScore(pss, max, course)
+        local maxFraction = 0
+        local tnsMultipliers, hnsMultipliers
+    
+        if max then
+            tnsMultipliers = maxQuasiMultipliers
+            hnsMultipliers = {HoldNoteScore_Held = 1, HoldNoteScore_LetGo = 1}
+        else
+            tnsMultipliers = course and courseScoringMults or normalScoringMults
+            hnsMultipliers = {HoldNoteScore_Held = 1}
+        end
+        local scoreCount
+        for tns, multiplier in pairs(tnsMultipliers) do
+            scoreCount = pss:GetTapNoteScores(tns)
+            maxFraction = maxFraction + (scoreCount * multiplier)
+        end
+        for hns, multiplier in pairs(hnsMultipliers) do
+            scoreCount = pss:GetHoldNoteScores(hns)
+            maxFraction = maxFraction + (scoreCount * multiplier)
+        end
+        return (maxFraction/objectCount) * maxScore
+    end 
 
     package.AddTapScore = function() end
     package.AddHoldScore = function() end
