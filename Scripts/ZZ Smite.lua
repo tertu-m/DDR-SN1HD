@@ -11,16 +11,16 @@ ScoringInfo = {
 local function NormalFormuler(delta)
     delta = math.abs(delta)
     if delta <= 0.01 then return 1
-    elseif delta >= 0.1 then return 0
-    else return clamp(-0.683*math.log(delta)-1.683, 0, 1)
+    elseif delta >= 0.16 then return 0
+    else return clamp(25.005*delta^2-12.49*delta+1.2893, 0, 1)
     end
 end
 
 local function CourseFormuler(delta)
     delta = math.abs(delta)
     if delta <= 0.01 then return 1
-    elseif delta >= 0.1 then return 0
-    else return clamp(-0.622*math.log(delta)-1.5302, 0, 1)
+    elseif delta >= 0.16 then return 0
+    else return clamp(-0.459*math.log(delta)-0.8801, 0, 1)
     end
 end
 
