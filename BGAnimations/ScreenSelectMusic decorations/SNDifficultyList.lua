@@ -11,6 +11,8 @@ local function LoadMetric(name, isBoolean)
     end
 end
 
+local hardColor = color "#FF0000"
+
 local function DiffToColor(diff, dark)
     local color = CustomDifficultyToColor(ToEnumShortString(diff))
     if dark then
@@ -181,7 +183,7 @@ for idx, diff in pairs(difficultiesToDraw) do
             end
         },
         Def.Sprite{
-            Name = "TicksBright",
+            Name = "TicksOver",
             Texture = "ticks",
             InitCommand = function(self) self:x(tickPos-55):diffuse(DiffToColor(diff)):halign(0):cropright(1):draworder(2) end,
             SNDLUpdateMessageCommand=function(self, params)
@@ -192,9 +194,9 @@ for idx, diff in pairs(difficultiesToDraw) do
                     if steps then
                         local meter = steps:GetMeter()
                         if meter > 10 then
-                            self:cropright(0):glowshift():effectcolor1(DiffToColor(diff)):effectcolor2(color "#FFFFFF")
+                            self:diffuse(hardColor):cropright(math.max(0,1-(meter-10)/10)):glowshift():effectcolor1(hardColor):effectcolor2(color "#FFFFFF")
                         else
-                            self:stopeffect():cropright(1-meter/10)
+                            self:diffuse(DiffToColor(diff)):stopeffect():cropright(1-meter/10)
                         end
                     else
                         self:stopeffect():cropright(1)
@@ -205,9 +207,27 @@ for idx, diff in pairs(difficultiesToDraw) do
             end,
         },
         Def.Sprite{
-            Name="TicksDark",
+            Name="TicksUnder",
             Texture="ticks",
             InitCommand = function(self) self:x(tickPos-5):diffuse(DiffToColor(diff,true)):draworder(1) end,
+            SNDLUpdateMessageCommand=function(self, params)
+                local song = GAMESTATE:GetCurrentSong()
+                if song then
+                    local steps = song:GetOneSteps(GAMESTATE:GetCurrentStyle():GetStepsType(), diff)
+                    if steps then
+                        local meter = steps:GetMeter()
+                        if meter > 10 then
+                            self:diffuse(DiffToColor(diff))
+                        else
+                            self:diffuse(DiffToColor(diff,true))
+                        end
+                    else
+                        self:diffuse(DiffToColor(diff,true))
+                    end
+                else
+                    self:diffuse(DiffToColor(diff,true))
+                end
+            end,
         }
     }
     table.insert(ret, element)
