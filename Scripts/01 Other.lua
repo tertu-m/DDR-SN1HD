@@ -1,8 +1,8 @@
 function JudgmentTransformCommand( self, params )
 	local x = 0
-	local y = -76
+	local y = -55
 	-- ���o�[�X����Y���ݒ��A�Z���^�[�����{
-	if params.bReverse then y = 67 end
+	if params.bReverse then y = 55 end
 	-- This makes no sense and wasn't even being used due to misspelling.
 	-- if bCentered then y = y * 2 end
 	self:x( x )
@@ -12,8 +12,8 @@ end
 -- �R���{�ݒ�
 function ComboTransformCommand( self, params )
 	local x = 0
-	local y = 38
-	if params.bReverse then y = -23 end
+	local y = 0
+	if params.bReverse then y = 0 end
 
 	--[[
 	if params.bCentered then
