@@ -14,7 +14,7 @@ t[#t+1] = Def.Actor{
     JudgmentMessageCommand = function(_,params)
         if not (( ScoringInfo[params.Player]) and
             (ScoringInfo.seed == GAMESTATE:GetStageSeed())) then
-            SN2Scoring.PrepareScoringInfo(IsStarterMode())
+            SN1Scoring.PrepareScoringInfo(IsStarterMode())
             ScoringInfo.seed = GAMESTATE:GetStageSeed()
         end
         if not ScoringPlayers[params.Player] then
