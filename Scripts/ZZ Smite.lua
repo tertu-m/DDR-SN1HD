@@ -86,14 +86,14 @@ function SN1Scoring.PrepareScoringInfo()
         for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
             local data = dataFetcher(GAMESTATE,pn)
             if data then
-                ScoringInfo[pn] = MakeScoringFunctions(data,pn)
+                ScoringInfo[pn] = MakeScoringFunctions(data, pn, inCourse)
             end
         end
     end
 end
 
-SN1Scoring.MakeNormalScoringFunctions = MakeScoringFunctions
-SN1Scoring.MakeCourseScoringFunctions = MakeScoringFunctions
+SN1Scoring.MakeNormalScoringFunctions = function(object, pn) return MakeScoringFunctions(object, pn, false) end
+SN1Scoring.MakeCourseScoringFunctions = function(object, pn) return MakeScoringFunctions(object, pn, true) end
 
 -- (c) 2015-2017 John Walstrom, "Inorizushi"
 -- All rights reserved.
