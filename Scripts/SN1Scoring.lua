@@ -49,7 +49,7 @@ local function MakeScoringFunctions(object, pn, course)
     local objectCount = radar:GetValue('RadarCategory_TapsAndHolds')+radar:GetValue('RadarCategory_Holds')+radar:GetValue('RadarCategory_Rolls')
     local package = {}
 
-    local function ComputeScore(pss, max, course)
+    local function ComputeScore(pss, max)
         local maxFraction = 0
         local tnsMultipliers, hnsMultipliers
     
@@ -77,13 +77,13 @@ local function MakeScoringFunctions(object, pn, course)
 
     package.GetCurrentScore = function(pss, stage, exact)
         if exact then
-            return ComputeScore(pss, false, course)
+            return ComputeScore(pss, false)
         end
-        return math.floor(ComputeScore(pss, false, course))
+        return math.floor(ComputeScore(pss, false))
     end
 
     package.GetCurrentMaxScore = function(pss, stage)
-        return ComputeScore(pss, true, course)
+        return ComputeScore(pss, true)
     end
 
     return package
@@ -101,14 +101,14 @@ function SN1Scoring.PrepareScoringInfo()
         for _,pn in pairs(GAMESTATE:GetEnabledPlayers()) do
             local data = dataFetcher(GAMESTATE,pn)
             if data then
-                ScoringInfo[pn] = MakeScoringFunctions(data,pn)
+                ScoringInfo[pn] = MakeScoringFunctions(data,pn,inCourse)
             end
         end
     end
 end
 
-SN1Scoring.MakeNormalScoringFunctions = MakeScoringFunctions
-SN1Scoring.MakeCourseScoringFunctions = MakeScoringFunctions
+SN1Scoring.MakeNormalScoringFunctions = function(data,pn) return MakeScoringFunctions(data, pn, false) end
+SN1Scoring.MakeCourseScoringFunctions = function(data,pn) return MakeScoringFunctions(data, pn, true) end
 
 -- (c) 2015-2017 John Walstrom, "Inorizushi"
 -- All rights reserved.
