@@ -20,6 +20,11 @@ t[#t+1] = Def.Actor{
         if not ScoringPlayers[params.Player] then
             ScoringPlayers[params.Player] = true
         end
+        if not params.HoldNoteScore then
+            ScoringInfo[params.Player].AddTapScore(params)
+        else
+            ScoringInfo[params.Player].AddHoldScore(params)
+        end
         local es = (GAMESTATE:Env()).EndlessState
         if es then
             es.scoring.handleNoteScore(params.HoldNoteScore or params.TapNoteScore,
