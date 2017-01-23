@@ -50,13 +50,13 @@ t[#t+1] = Def.ActorFrame{
 	end;
 	Def.ActorFrame{
 		LoadActor(THEME:GetPathB("","_shared/_bg"))..{
-			InitCommand=cmd(Center;zoom,8;spin;effectmagnitude,0,0,-1.5;diffuse,color("1,1,1,1"));
+			InitCommand=cmd(clearzbuffer,0;Center;zoom,8;spin;effectmagnitude,0,0,-1.5;diffuse,color("1,1,1,1"));
 		};
 	};
 	Def.ActorFrame{
-	InitCommand=cmd(spin;effectmagnitude,-1.5,2,-1.5;Center;zoom,0.5;blend,Blend.Add;);
+	InitCommand=cmd(spin;effectmagnitude,-1.5,2,-1.5;Center;zoom,0.5;);
 		LoadActor(THEME:GetPathB("","_shared/SuperNOVABG.txt"))..{
-			InitCommand=cmd(clearzbuffer,0;rotationx,-90;rotationz,-90;diffuse,color("0.75,0.75,0.75,0.5");zoom,8;fadebottom,1;blend,Blend.Add;);
+			InitCommand=cmd(clearzbuffer,0;rotationx,-90;rotationz,-90;diffuse,color("1,1,1,0.75");zoom,8);
 		};
 		Def.ActorFrame{
 			InitCommand=cmd(zoom,8;x,SCREEN_WIDTH/2);

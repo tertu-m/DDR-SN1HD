@@ -173,17 +173,9 @@ function WheelScrollOn(self)
   local DO = 99
   if ThemePrefs.Get("XStyledMusicSelect") == "Wide Style" then
     self:draworder(DO)
-    if PREFSMAN:GetPreference("DisplayAspectRatio") == "16_9" then
-      self:x(263)
-    else
-      self:x(156)
-    end;
+    self:x(156)
   else
     self:draworder(DO)
-    if PREFSMAN:GetPreference("DisplayAspectRatio") == "16_9" then
-      self:x(263)
-    else
-      self:x(156)
-    end;
+    self:x(WideScale(156,263))
   end
 end
